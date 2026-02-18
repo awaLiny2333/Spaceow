@@ -41,6 +41,10 @@ struct Index {
             Row() {
               Button(`󰃅 ${resource2String($r('app.string.open'), this.context)}`)
                 .onClick(() => {
+                  this.loading = true;
+                  this.baseFile = undefined;
+                  this.basePath = '¯\\_(ツ)_/¯';
+                  this.baseSize = -1;
                   pickDirectory().then((r) => {
                     if (!r) {
                       return;
@@ -110,7 +114,6 @@ struct Index {
   scan(path: string) {
     this.baseSize = 0;
     this.basePath = path;
-    this.loading = true;
 
     let workerInstance: worker.ThreadWorker | undefined = undefined;
     try {

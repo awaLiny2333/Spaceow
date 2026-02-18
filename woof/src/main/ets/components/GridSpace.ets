@@ -233,21 +233,22 @@ function layoutFolder(folder: meowFile, resolution: number): gridSpacePosition[]
   }
 
   // 计算总大小
-  const totalSize = items.reduce((sum, f) => sum + f.size, 0);
+  const totalSize = folder.size;
+  // const totalSize = items.reduce((sum, f) => sum + f.size, 0);
   if (totalSize === 0) {
     // 如果所有文件大小都为 0，则全部使用边长为 1 的正方形
     return layoutAllOnes(items, resolution);
   }
 
   // 尝试不同的缩放因子，从 1.0 开始逐渐减小，直到布局成功
-  let scale = 1.0;
+  let scale = 1.5;
   const maxAttempts = 20; // 避免无限循环
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     // 根据当前缩放因子计算每个文件的边长
     const candidates = items.map(file => {
       // 目标面积 = (file.size / totalSize) * resolution^2 * scale
       const area = (file.size / totalSize) * resolution * resolution * scale;
-      let a = Math.max(1, Math.floor(Math.sqrt(area)));
+      let a = Math.max(1, Math.ceil(Math.sqrt(area)));
       // 边长不能超过棋盘
       a = Math.min(a, resolution);
       return { file: file, a: a } as itemInterface;
@@ -257,7 +258,7 @@ function layoutFolder(folder: meowFile, resolution: number): gridSpacePosition[]
     candidates.sort((a, b) => b.a - a.a);
 
     // 尝试布局
-    const result = tryLayout(Array.from(candidates), resolution);
+    const result = tryLayout(candidates, resolution);
     if (result) {
       return result; // 成功则返回
     }
