@@ -1,4 +1,4 @@
-import lazy { defaultAnima, defaultRoundedRadius, meowAvoid, meowFreeWindowModeStatus, meowLayoutModeStatus } from '../catstypicalframework/utils/ui';
+import lazy { defaultAnima, defaultInnerRadius, defaultRoundedRadius, meowAvoid, meowFreeWindowModeStatus, meowLayoutModeStatus } from '../catstypicalframework/utils/ui';
 import { AppStorageV2 } from '@kit.ArkUI';
 import { meowMisc } from '../catstypicalframework/hosts/meowMisc';
 import lazy { resource2String } from '../catstypicalframework/utils/resource';
@@ -50,7 +50,7 @@ struct Index {
       if (this.render) {
         Column({ space: 10 }) {
           Scroll() {
-            Row() {
+            Row({ space: 10 }) {
               Button(`󰃅 ${resource2String($r('app.string.open'), this.context)}`)
                 .onClick(() => {
                   this.loading = true;
@@ -66,6 +66,11 @@ struct Index {
                   })
                 })
                 .backgroundColor($r('app.color.meow_brand'))
+              Button(`󰓞 ${resource2String($r('app.string.privacy_link'), this.context)}`)
+                .backgroundColor($r('app.color.meow_brand'))
+                .onClick(() => {
+                  openLink(privacyPolicyLink, this.context as common.UIAbilityContext);
+                })
             }
             .padding(10)
           }
