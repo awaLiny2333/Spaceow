@@ -34,7 +34,6 @@ struct GridSpace {
   // Size
   @Local spaceWidth: number = -1;
   @Local spaceHeight: number = -1;
-  @Local standardSpace: number = this.bRadius * 0.5;
   // UI
   @Local isMenu: boolean = false;
   @Local isFocus: boolean = false;
@@ -48,11 +47,11 @@ struct GridSpace {
           ForEach(layoutFolder(this.fileObj, resolution), ((gsp: gridSpacePosition) => {
             GridSpace({ fileObj: gsp.file, bRadius: this.bRadius * 0.5 })
               .position({
-                left: gsp.x * (this.spaceWidth - this.standardSpace) / resolution,
-                top: gsp.y * (this.spaceHeight - this.standardSpace) / resolution,
+                left: gsp.x * (this.spaceWidth - this.bRadius * 0.5) / resolution,
+                top: gsp.y * (this.spaceHeight - this.bRadius * 0.5) / resolution,
               })
-              .width(gsp.a * (this.spaceWidth - this.standardSpace) / resolution - this.standardSpace)
-              .height(gsp.a * (this.spaceHeight - this.standardSpace) / resolution - this.standardSpace)
+              .width(gsp.a * (this.spaceWidth - this.bRadius * 0.5) / resolution - this.bRadius * 0.5)
+              .height(gsp.a * (this.spaceHeight - this.bRadius * 0.5) / resolution - this.bRadius * 0.5)
           }), (gsp: gridSpacePosition) => {
             return gsp.file.path + '_' + gsp.file.size.toFixed(16);
           })
@@ -69,7 +68,7 @@ struct GridSpace {
                 .fontSize(this.spaceHeight / 6)
                 .opacity(0.5)
             }
-            .padding(this.standardSpace * 0.5)
+            .padding(this.bRadius * 0.5 * 0.5)
             .width('100%')
             .alignItems(HorizontalAlign.Start)
           }
@@ -77,7 +76,7 @@ struct GridSpace {
       }
       .borderColor(this.isFocus ? $r('sys.color.font_secondary') : $r('sys.color.comp_background_tertiary'))
       .borderWidth(this.isFocus ? 2 : 1)
-      .padding({ left: this.standardSpace, top: this.standardSpace })
+      .padding({ left: this.bRadius * 0.5, top: this.bRadius * 0.5 })
       .backgroundColor(this.isOpened ? $r('app.color.blur_background') : (this.fileObj?.isFolder ? $r('app.color.meow_sub') : $r('app.color.meow_sub_sub')))
       .animation(defaultAnima)
       .onFocus(() => {
