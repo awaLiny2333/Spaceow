@@ -7,7 +7,6 @@ import { meow, meowLevel } from '../catstypicalframework/utils/catsLogger';
 import { meowFile } from '../hosts/meowFiles';
 import lazy { MessageEvents, worker } from '@kit.ArkTS';
 import lazy GridSpace from '../components/GridSpace';
-import { common, Want } from '@kit.AbilityKit';
 
 @Entry
 @ComponentV2
@@ -22,6 +21,7 @@ struct Index {
   @Local baseSize: number = -1;
   @Local loading: boolean = false;
   // Runtime
+  @Local render: boolean = false;
   context: Context = this.getUIContext().getHostContext()!;
 
   aboutToAppear(): void {
@@ -35,49 +35,53 @@ struct Index {
 
   build() {
     Stack() {
-      Column({ space: 10 }) {
-        Scroll() {
-          Row() {
-            Button(`󰃅 ${resource2String($r('app.string.open'), this.context)}`)
-              .onClick(() => {
-                pickDirectory().then((r) => {
-                  if (!r) {
-                    return;
-                  }
-                  meow(`Picked path: ${r}`, 'pickDirectory', meowLevel.INFO);
-                  this.scan(r);
+      if (this.render) {
+        Column({ space: 10 }) {
+          Scroll() {
+            Row() {
+              Button(`󰃅 ${resource2String($r('app.string.open'), this.context)}`)
+                .onClick(() => {
+                  pickDirectory().then((r) => {
+                    if (!r) {
+                      return;
+                    }
+                    meow(`Picked path: ${r}`, 'pickDirectory', meowLevel.INFO);
+                    this.scan(r);
+                  })
                 })
-              })
-              .backgroundColor($r('app.color.meow_brand'))
+                .backgroundColor($r('app.color.meow_brand'))
+            }
+            .padding(10)
           }
-          .padding(10)
-        }
-        .align(Alignment.TopStart)
-        .edgeEffect(EdgeEffect.Spring)
-        .scrollable(ScrollDirection.Horizontal)
-        .borderRadius(defaultRoundedRadius)
+          .align(Alignment.TopStart)
+          .edgeEffect(EdgeEffect.Spring)
+          .scrollable(ScrollDirection.Horizontal)
+          .borderRadius(defaultRoundedRadius)
+          .width('100%')
+          .borderWidth(1)
+          .borderColor($r('sys.color.comp_background_tertiary'))
+          .backgroundColor($r('app.color.blur_background'))
+          .shadow(ShadowStyle.OUTER_DEFAULT_SM)
+
+          if (!this.loading) {
+            GridSpace({ fileObj: this.baseFile, bRadius: defaultRoundedRadius })
+              .width('100%')
+              .layoutWeight(1)
+          }
+
+        } // Contents
+        .height('100%')
         .width('100%')
-        .borderWidth(1)
-        .borderColor($r('sys.color.comp_background_tertiary'))
-        .backgroundColor($r('app.color.blur_background'))
-        .shadow(ShadowStyle.OUTER_DEFAULT_SM)
+        .alignItems(HorizontalAlign.Start)
+        .padding(this.myMeowAvoid)
 
-        if (!this.loading) {
-          GridSpace({ fileObj: this.baseFile, bRadius: defaultRoundedRadius })
-            .width('100%')
-            .layoutWeight(1)
-        }
-
-      } // Contents
-      .height('100%')
-      .width('100%')
-      .alignItems(HorizontalAlign.Start)
-      .padding(this.myMeowAvoid)
-
-      Text(`${this.basePath} (${addUnitsToSize(this.baseSize)})`) // Title
-        .padding(10)
-        .maxLines(1)
-
+        Text(`${this.basePath} (${addUnitsToSize(this.baseSize)})`) // Title
+          .padding(10)
+          .maxLines(1)
+          .wordBreak(WordBreak.BREAK_ALL)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .constraintSize({ maxWidth: this.myMeowLayout.width - 250 })
+      }
     } // Base
     .alignContent(Alignment.Top)
     .animation(defaultAnima)
@@ -91,6 +95,9 @@ struct Index {
       }
       if (o.height != n.height) {
         this.myMeowLayout.height = n.height as number;
+      }
+      if (!this.render) {
+        this.render = true;
       }
     })
   }

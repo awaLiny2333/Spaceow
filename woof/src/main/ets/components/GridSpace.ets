@@ -75,9 +75,10 @@ struct GridSpace {
           }
         }
       }
-      .brightness(this.isFocus ? 1.1 : 1)
+      .borderColor(this.isFocus ? $r('sys.color.font_secondary') : $r('sys.color.comp_background_tertiary'))
+      .borderWidth(this.isFocus ? 2 : 1)
       .padding({ left: this.standardSpace, top: this.standardSpace })
-      .backgroundColor(this.isOpened ? $r('app.color.blur_background') : $r('app.color.meow_sub'))
+      .backgroundColor(this.isOpened ? $r('app.color.blur_background') : (this.fileObj?.isFolder ? $r('app.color.meow_sub') : $r('app.color.meow_sub_sub')))
       .animation(defaultAnima)
       .onFocus(() => {
         this.isFocus = true;
@@ -104,8 +105,6 @@ struct GridSpace {
       .width('100%')
       .height('100%')
       .borderRadius(this.bRadius)
-      .borderWidth(1)
-      .borderColor($r('sys.color.comp_background_tertiary'))
       .shadow(this.spaceWidth * this.spaceHeight > 50000 ? ShadowStyle.OUTER_DEFAULT_SM : undefined)
       .gesture(
         LongPressGesture({ repeat: true })

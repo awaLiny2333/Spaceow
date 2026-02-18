@@ -5,6 +5,7 @@
     "description": "$string:module_desc",
     "mainElement": "WoofAbility",
     "deviceTypes": [
+      "default",
       "tablet",
       "2in1"
     ],
