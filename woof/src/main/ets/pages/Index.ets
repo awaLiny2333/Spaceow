@@ -2,11 +2,14 @@ import lazy { defaultAnima, defaultRoundedRadius, meowAvoid, meowFreeWindowModeS
 import { AppStorageV2 } from '@kit.ArkUI';
 import { meowMisc } from '../catstypicalframework/hosts/meowMisc';
 import lazy { resource2String } from '../catstypicalframework/utils/resource';
-import lazy { addUnitsToSize, pickDirectory } from '../catstypicalframework/utils/storage';
+import lazy { addUnitsToSize, pickDirectory, saveHybrid } from '../catstypicalframework/utils/storage';
 import { meow, meowLevel } from '../catstypicalframework/utils/catsLogger';
 import { meowFile } from '../hosts/meowFiles';
 import lazy { MessageEvents, worker } from '@kit.ArkTS';
 import lazy GridSpace from '../components/GridSpace';
+import { common } from '@kit.AbilityKit';
+import { fileIo } from '@kit.CoreFileKit';
+import openLink from '../catstypicalframework/utils/jumps';
 
 @Entry
 @ComponentV2
@@ -21,6 +24,7 @@ struct Index {
   @Local baseSize: number = -1;
   @Local loading: boolean = false;
   // Runtime
+  @Local showPrivacy: boolean = false;
   @Local render: boolean = false;
   context: Context = this.getUIContext().getHostContext()!;
 
@@ -31,6 +35,14 @@ struct Index {
       this.baseSize = this.baseFile.size;
       this.myMeowMisc.newMeowFileObj = undefined;
     }
+    fileIo.access(`${this.context.filesDir}/agreePrivacyPolicy`).then((r) => {
+      if (!r) {
+        this.showPrivacy = true;
+      }
+    })
+      .catch((e: BusinessError) => {
+        meow(`fileIo.access(${this.context.filesDir}/agreePrivacyPolicy) Failed: ${e}`, 'Index', meowLevel.ERROR);
+      })
   }
 
   build() {
@@ -104,6 +116,14 @@ struct Index {
         this.render = true;
       }
     })
+    .bindSheet($$this.showPrivacy, this.meowPrivacy(), {
+      title: { title: $r('app.string.welcome') },
+      showClose: false,
+      preferType: SheetType.CENTER,
+      onWillDismiss: (() => {
+        // Empty
+      })
+    })
   }
 
   /**
@@ -146,4 +166,46 @@ struct Index {
 
     return true;
   }
+
+  @Builder
+  meowPrivacy() {
+    Column({ space: 10 }) {
+      Blank()
+      Text($r('app.string.privacy_view'))
+        .textAlign(TextAlign.Center)
+      Text($r('app.string.privacy_link'))
+        .fontColor($r('app.color.meow_brand'))
+        .textAlign(TextAlign.Center)
+        .fontWeight(FontWeight.Bold)
+        .onClick(() => {
+          openLink(privacyPolicyLink, this.context as common.UIAbilityContext);
+        })
+        .hoverEffect(HoverEffect.Highlight)
+        .borderRadius(defaultRoundedRadius)
+        .padding(10)
+      Blank()
+      Row({ space: 10 }) {
+        Button($r('app.string.cancel'))
+          .backgroundColor($r('app.color.meow_brand'))
+          .onClick(() => {
+            (this.context as common.UIAbilityContext).terminateSelf()
+              .catch((e: BusinessError) => {
+                meow(`(this.context as common.UIAbilityContext).terminateSelf() Failed: ${e}`, 'Index', meowLevel.ERROR);
+              })
+          })
+        Blank()
+        Button($r('app.string.agree'))
+          .backgroundColor($r('app.color.meow_brand'))
+          .onClick(() => {
+            saveHybrid(`${this.context.filesDir}/agreePrivacyPolicy`, 'meow', true);
+            this.showPrivacy = false;
+          })
+      }.width('100%')
+    }
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+    .padding(30)
+  }
 }
+
+export const privacyPolicyLink: string = 'https://agreement-drcn.hispace.dbankcloud.cn/index.html?lang=zh&agreementId=1888818198468416832';

@@ -27,6 +27,26 @@
     {
       "name": "view_in_new_spaceow",
       "value": "在新的盘扫喵窗口中查看"
+    },
+    {
+      "name": "privacy_view",
+      "value": "我们尊重您的权利和隐私。请在继续使用此 App 前查看并充分确认我们的隐私政策："
+    },
+    {
+      "name": "welcome",
+      "value": "欢迎来到盘扫喵！"
+    },
+    {
+      "name": "privacy_link",
+      "value": "盘扫喵《隐私政策》"
+    },
+    {
+      "name": "agree",
+      "value": "同意"
+    },
+    {
+      "name": "cancel",
+      "value": "取消"
     }
   ]
 }

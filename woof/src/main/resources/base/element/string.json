@@ -27,6 +27,26 @@
     {
       "name": "view_in_new_spaceow",
       "value": "View in new Spaceow window"
+    },
+    {
+      "name": "privacy_view",
+      "value": "We respect your rights and privacy. Please check out our Privacy Policy before using this App:"
+    },
+    {
+      "name": "welcome",
+      "value": "Welcome to Spaceow!"
+    },
+    {
+      "name": "privacy_link",
+      "value": "Privacy Policy of Spaceow"
+    },
+    {
+      "name": "agree",
+      "value": "Agree"
+    },
+    {
+      "name": "cancel",
+      "value": "Cancel"
     }
   ]
 }
