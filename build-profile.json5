@@ -1,0 +1,56 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001AC956BB6F165412BD7A037929CD7DDEF6859E301EFB278437C3A78B5D706F9156013C4F0E4E5E",
+          "profile": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.p12",
+          "storePassword": "0000001AD69CDFBC591CD7F007FABD6EC5FC112C1AD27F03F198A5B4C831A876B0E2B03DB504BD1A4C1C"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "6.0.2(22)",
+        "compatibleSdkVersion": "6.0.0(20)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "woof",
+      "srcPath": "./woof",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

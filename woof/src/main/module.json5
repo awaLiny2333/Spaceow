@@ -1,0 +1,53 @@
+{
+  "module": {
+    "name": "woof",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "WoofAbility",
+    "deviceTypes": [
+      "tablet",
+      "2in1"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "WoofAbility",
+        "srcEntry": "./ets/woofability/WoofAbility.ets",
+        "description": "$string:WoofAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:WoofAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "orientation": "auto_rotation_restricted",
+        "launchType": "multiton",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "ohos.want.action.home"
+            ]
+          }
+        ]
+      }
+    ],
+    "extensionAbilities": [
+      {
+        "name": "WoofBackupAbility",
+        "srcEntry": "./ets/woofbackupability/WoofBackupAbility.ets",
+        "type": "backup",
+        "exported": false,
+        "metadata": [
+          {
+            "name": "ohos.extension.backup",
+            "resource": "$profile:backup_config"
+          }
+        ],
+      }
+    ]
+  }
+}

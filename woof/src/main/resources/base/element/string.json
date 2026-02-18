@@ -1,0 +1,32 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "Meow"
+    },
+    {
+      "name": "WoofAbility_desc",
+      "value": "Scan and visualize disk space!"
+    },
+    {
+      "name": "WoofAbility_label",
+      "value": "Spaceow"
+    },
+    {
+      "name": "open",
+      "value": "Open"
+    },
+    {
+      "name": "visit",
+      "value": "Show in Files"
+    },
+    {
+      "name": "copy",
+      "value": "Copy path"
+    },
+    {
+      "name": "view_in_new_spaceow",
+      "value": "View in new Spaceow window"
+    }
+  ]
+}

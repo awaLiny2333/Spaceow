@@ -1,0 +1,32 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "喵"
+    },
+    {
+      "name": "WoofAbility_desc",
+      "value": "磁盘空间扫描和可视化！"
+    },
+    {
+      "name": "WoofAbility_label",
+      "value": "盘扫喵"
+    },
+    {
+      "name": "open",
+      "value": "打开"
+    },
+    {
+      "name": "visit",
+      "value": "在文件中打开"
+    },
+    {
+      "name": "copy",
+      "value": "复制路径"
+    },
+    {
+      "name": "view_in_new_spaceow",
+      "value": "在新的盘扫喵窗口中查看"
+    }
+  ]
+}
