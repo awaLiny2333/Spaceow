@@ -60,7 +60,7 @@ struct Index {
               Button(`󰓞 ${resource2String($r('app.string.privacy_link'), this.context)}`)
                 .backgroundColor($r('app.color.meow_brand'))
                 .onClick(() => {
-                  const link = getPrivacyPolicyLink();
+                  const link = getPrivacyPolicyLink('1888818198468416832'); // This may change if privacy policy in AGC changes
                   if (link) {
                     openLink(link, this.context as common.UIAbilityContext);
                   }

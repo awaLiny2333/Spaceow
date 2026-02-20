@@ -1,20 +1,15 @@
 import { privacyManager } from '@kit.AppGalleryKit';
 import { meow, meowLevel } from './catsLogger';
 
-export default function getPrivacyPolicyLink() {
+export default function getPrivacyPolicyLink(id: string) {
   try {
     const infos = privacyManager.getAppPrivacyMgmtInfo().privacyInfo;
-    if (infos.length == 0) {
-      return undefined;
-    }
-    // Find latest
-    let latestIdx: number = -1;
+    // Find target
     for (let i = 0; i < infos.length; i++) {
-      if (infos[i].versionCode > infos[latestIdx].versionCode) {
-        latestIdx = i;
+      if (infos[i].id == id) {
+        return infos[i].url;
       }
     }
-    return infos[latestIdx].url;
   } catch (e) {
     meow(`privacyManager.getAppPrivacyMgmtInfo().privacyInfo failed: ${e}`, 'getPrivacyPolicyLink', meowLevel.ERROR);
   }
