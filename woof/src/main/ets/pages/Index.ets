@@ -9,7 +9,7 @@ import lazy { MessageEvents, worker } from '@kit.ArkTS';
 import lazy GridSpace from '../components/GridSpace';
 import { common } from '@kit.AbilityKit';
 import openLink from '../catstypicalframework/utils/jumps';
-import getPrivacyPolicyLink from '../catstypicalframework/utils/privacy';
+import { getPrivacyPolicyLink } from '../catstypicalframework/utils/privacy';
 
 @Entry
 @ComponentV2
@@ -74,7 +74,7 @@ struct Index {
           .borderRadius(defaultRoundedRadius)
           .width('100%')
           .borderWidth(1)
-          .borderColor($r('sys.color.comp_background_tertiary'))
+          .borderColor($r('sys.color.icon_fourth'))
           .backgroundColor($r('app.color.blur_background'))
           .shadow(ShadowStyle.OUTER_DEFAULT_SM)
 

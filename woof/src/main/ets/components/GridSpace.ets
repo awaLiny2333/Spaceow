@@ -74,7 +74,7 @@ struct GridSpace {
           }
         }
       }
-      .borderColor(this.isFocus ? $r('sys.color.font_secondary') : $r('sys.color.comp_background_tertiary'))
+      .borderColor(this.isFocus ? $r('sys.color.font_secondary') : $r('sys.color.icon_fourth'))
       .borderWidth(this.isFocus ? 2 : 1)
       .padding({ left: this.bRadius * 0.5, top: this.bRadius * 0.5 })
       .backgroundColor(this.isOpened ? $r('app.color.blur_background') : (this.fileObj?.isFolder ? $r('app.color.meow_sub') : $r('app.color.meow_sub_sub')))
