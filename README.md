@@ -25,4 +25,4 @@ You can try that one if you haven't have API 20 ready on your device.
 
 
 # Get the App
-[![HUAWEI HarmonyOS App Gallery](.meow/explore-it-on-appgallery.svg)](https://appgallery.huawei.com/app/detail?id=meow.liny.rename.batch.meow)
+[![HUAWEI HarmonyOS App Gallery](.meow/explore-it-on-appgallery.svg)](https://appgallery.huawei.com/app/detail?id=meow.liny.space.meow)
