@@ -22,3 +22,7 @@ There does exist a legacy version of Spaceow:
 
 You can try that one if you haven't have API 20 ready on your device.
 如果你的设备还没有 API 20，可以尝试使用。
+
+
+# Get the App
+[![HUAWEI HarmonyOS App Gallery](.meow/explore-it-on-appgallery.svg)](https://appgallery.huawei.com/app/detail?id=meow.liny.rename.batch.meow)
