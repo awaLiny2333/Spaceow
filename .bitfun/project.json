@@ -1,0 +1,100 @@
+{
+  "name": "Spaceo",
+  "description": "",
+  "projectType": "hvigor",
+  "uri": {
+    "$type": 1,
+    "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo"
+  },
+  "buildTask": "",
+  "extendConfigs": {
+    "sourceSet": [],
+    "build": []
+  },
+  "subProjects": [
+    {
+      "name": "woof",
+      "description": "",
+      "projectType": "hvigor",
+      "uri": {
+        "$type": 1,
+        "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof"
+      },
+      "buildTask": "",
+      "extendConfigs": {
+        "sourceSet": [],
+        "build": []
+      },
+      "subProjects": [],
+      "sourceSet": {
+        "include": {
+          "sourceFiles": [],
+          "resourceFiles": []
+        },
+        "exclude": {
+          "contentFiles": []
+        }
+      },
+      "dependencyProjects": []
+    }
+  ],
+  "sourceSet": {
+    "include": {
+      "sourceFiles": [
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof/src/main/ets"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof/src/ohosTest/ets"
+          }
+        }
+      ],
+      "resourceFiles": []
+    },
+    "exclude": {
+      "contentFiles": [
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/oh_modules"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/.hvigor"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/build"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof/.test"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof/oh_modules"
+          }
+        },
+        {
+          "url": {
+            "$type": 1,
+            "data": "file:///storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Projects/HarmonyOS_Projects/Spaceo/woof/build"
+          }
+        }
+      ]
+    }
+  }
+}

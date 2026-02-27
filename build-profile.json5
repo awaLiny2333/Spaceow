@@ -5,34 +5,34 @@
         "name": "release",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "E:/linys/HarmonyOS/Spaceow/Spaceow.cer",
+          "certpath": "/storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Releases/Spaceow/Spaceow.cer",
           "keyAlias": "Spaceow",
           "keyPassword": "0000001CD1AECC2A9EB9756FFF0A1520D5C4132AA478AC787720D21741B3FC9120AE254D1D9B833500D4875B",
-          "profile": "E:/linys/HarmonyOS/Spaceow/SpaceowRelease.p7b",
+          "profile": "/storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Releases/Spaceow/SpaceowRelease.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "E:/linys/HarmonyOS/meowKeyStore.p12",
+          "storeFile": "/storage/Users/currentUser/Documents/Meow/Codes/HMOS/HarmonyOS_Releases/meowKeyStore.p12",
           "storePassword": "0000001CFBD3B34B396E8D22924227DB726B86EDECFC7C54A68F8412F4E7D57D73297ED2FFE23948DD84AF3E"
         }
       },
       {
         "name": "default",
-        "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.cer",
+          "storePassword": "000000204A3B952EDF3A9CD8D1CAD762030E47736FE81E0697B0DAA6B15710C20793D567C24E2A34B2DB5BD53D2D152A",
+          "certpath": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A7F747D019E682B3D2EA075152E6BD239C2FD065812DA0B774176F227F8C9076F16A49E07CA42",
-          "profile": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.p7b",
+          "keyPassword": "000000204A3B952EDF3A9CD8D1CAD762030E47736FE81E0697B0DAA6B15710C20793D567C24E2A34B2DB5BD53D2D152A",
+          "profile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\meowDUO\\.ohos\\config\\default_Spaceo_PWZ4k2gDSSkpPbvXulwnhI8Sos3X046j70-gHJBFBck=.p12",
-          "storePassword": "0000001A0DFA43520AF92AD2C6529AD792C2C8EECA949BE4A2365E628DE4F2778313C775BE76302055B1"
-        }
+          "storeFile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p12"
+        },
+        "type": "HarmonyOS"
       }
     ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
-        "targetSdkVersion": "6.0.2(22)",
+        "signingConfig": "release",
+        "targetSdkVersion": "6.0.1(21)",
         "compatibleSdkVersion": "6.0.0(20)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
@@ -45,7 +45,7 @@
       {
         "name": "release",
         "signingConfig": "release",
-        "targetSdkVersion": "6.0.2(22)",
+        "targetSdkVersion": "6.0.1(21)",
         "compatibleSdkVersion": "6.0.0(20)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
@@ -58,7 +58,7 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"
