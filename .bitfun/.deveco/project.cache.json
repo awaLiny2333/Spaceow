@@ -1,9 +1,9 @@
 {
   "CommonInfo": {
-    "current.select.product": "default",
-    "current.select.buildMode": ""
+    "current.select.product": "release",
+    "current.select.buildMode": "release"
   },
   "lastOhpmInstallResult": true,
   "projectSizeTraceTmpKey": true,
-  "lastProjectSizeTraceTime": "1772186888"
+  "lastProjectSizeTraceTime": "1772854155"
 }

@@ -126,7 +126,6 @@ struct GridSpace {
         aboutToDisappear: () => {
           this.isMenu = false;
         },
-        hapticFeedbackMode: HapticFeedbackMode.ENABLED
       })
     }
   }
