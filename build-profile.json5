@@ -16,6 +16,7 @@
       },
       {
         "name": "default",
+        "type": "HarmonyOS",
         "material": {
           "storePassword": "000000204A3B952EDF3A9CD8D1CAD762030E47736FE81E0697B0DAA6B15710C20793D567C24E2A34B2DB5BD53D2D152A",
           "certpath": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.cer",
@@ -24,14 +25,13 @@
           "profile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p12"
-        },
-        "type": "HarmonyOS"
+        }
       }
     ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "release",
+        "signingConfig": "default",
         "targetSdkVersion": "6.0.0(20)",
         "compatibleSdkVersion": "6.0.0(20)",
         "runtimeOS": "HarmonyOS",
@@ -74,7 +74,7 @@
           "name": "default",
           "applyToProducts": [
             "default",
-            "release",
+            "release"
           ]
         }
       ]
