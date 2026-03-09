@@ -15,35 +15,39 @@ export interface meowReadPickResult {
  * */
 export async function fileDocumentPick2Path(fileSuffixFilters: string[] = [".meow"], maxSelectNumber: number = 1): Promise<meowReadPickResult> {
   // if (canIUse("SystemCapability.FileManagement.UserFileService")) {
-  return (new picker.DocumentViewPicker())
-    .select({
-      maxSelectNumber: maxSelectNumber,
-      fileSuffixFilters: fileSuffixFilters
-    })
-    .then((documentSelectResult) => {
-      let sourcePaths: string[] = [];
+  try {
+    return (new picker.DocumentViewPicker())
+      .select({
+        maxSelectNumber: maxSelectNumber,
+        fileSuffixFilters: fileSuffixFilters
+      })
+      .then((documentSelectResult) => {
+        let sourcePaths: string[] = [];
 
-      if (documentSelectResult.length == 0) {
-        console.info(`[fileDocumentPick2Path] DocumentViewPicker.select Selected nothing. documentSelectResult = ${documentSelectResult}`);
+        if (documentSelectResult.length == 0) {
+          console.info(`[fileDocumentPick2Path] DocumentViewPicker.select Selected nothing. documentSelectResult = ${documentSelectResult}`);
+          return { succeed: false } as meowReadPickResult;
+        }
+
+        for (let index = 0; index < documentSelectResult.length; index++) {
+          const sourcePath = uri_2_path(documentSelectResult[index]);
+          console.info(`[fileDocumentPick2Path] DocumentViewPicker.select successfully, documentSelectResult sourcePath[${index}]: ${sourcePath}`);
+          sourcePaths.push(sourcePath);
+        }
+
+        return {
+          succeed: true,
+          sourcePaths: sourcePaths,
+        } as meowReadPickResult;
+      })
+      .catch((e: BusinessError) => {
+        console.error(`[fileDocumentPick2Path] DocumentViewPicker.select failed with err: ${e}`);
         return { succeed: false } as meowReadPickResult;
-      }
-
-      for (let index = 0; index < documentSelectResult.length; index++) {
-        const sourcePath = uri_2_path(documentSelectResult[index]);
-        console.info(`[fileDocumentPick2Path] DocumentViewPicker.select successfully, documentSelectResult sourcePath[${index}]: ${sourcePath}`);
-        sourcePaths.push(sourcePath);
-      }
-
-      return {
-        succeed: true,
-        sourcePaths: sourcePaths,
-      } as meowReadPickResult;
-    })
-    .catch((e: BusinessError) => {
-      console.error(`[fileDocumentPick2Path] DocumentViewPicker.select failed with err: ${e}`);
-      return { succeed: false } as meowReadPickResult;
-    });
-
+      });
+  } catch (e) {
+    console.error('[fileDocumentPick2Path] try DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
+    return { succeed: false } as meowReadPickResult;
+  }
   // } else {
   //   console.error('[fileDocumentPick2Path] DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
   //   return { succeed: false } as meowReadPickResult;
