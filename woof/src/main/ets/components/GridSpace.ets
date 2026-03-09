@@ -1,7 +1,7 @@
 import { meow, meowLevel } from '../catstypicalframework/utils/catsLogger';
 import { resource2String } from '../catstypicalframework/utils/resource';
 import { addUnitsToSize, fileNameOfPath, showInFiles } from '../catstypicalframework/utils/storage';
-import { defaultAnima } from '../catstypicalframework/utils/ui';
+import { defaultAnima, defaultRoundedRadius, meowLayoutModeStatus } from '../catstypicalframework/utils/ui';
 import { meowFile } from '../hosts/meowFiles';
 import { BusinessError, deviceInfo } from '@kit.BasicServicesKit';
 import { abilityManager, common, Want } from '@kit.AbilityKit';
@@ -32,13 +32,18 @@ struct GridSpace {
   @Param fileObj: meowFile | undefined = undefined;
   @Param @Require bRadius: number;
   // Size
+  @Local myMeowLayout: meowLayoutModeStatus = AppStorageV2.connect<meowLayoutModeStatus>(meowLayoutModeStatus)!;
   @Local spaceWidth: number = -1;
   @Local spaceHeight: number = -1;
   // UI
   @Local isMenu: boolean = false;
   @Local isFocus: boolean = false;
+  @Local isHover: boolean = false;
+  @Local hoverBiasX: number = 0;
+  @Local hoverBiasY: number = 0;
   // Runtime
-  context: Context = this.getUIContext().getHostContext()!;
+  context: Context = this.getUIContext()
+    .getHostContext()!;
 
   build() {
     if (this.fileObj) {
@@ -73,20 +78,38 @@ struct GridSpace {
             .alignItems(HorizontalAlign.Start)
           }
         }
+        Column()
+          .bindContextMenu(this.isMenu, this.bindMenuBuilder(), {
+            aboutToDisappear: () => {
+              this.isMenu = false;
+            },
+          })
       }
       .borderColor(this.isFocus ? $r('sys.color.font_secondary') : $r('sys.color.icon_fourth'))
       .borderWidth(this.isFocus ? 2 : 1)
       .padding({ left: this.bRadius * 0.5, top: this.bRadius * 0.5 })
       .backgroundColor(this.isOpened ? $r('app.color.blur_background') : (this.fileObj?.isFolder ? $r('app.color.meow_sub') : $r('app.color.meow_sub_sub')))
+      .shadow(this.meowShadowOptions())
+      .scale((!this.fileObj?.isFolder ||
+        !this.isOpened) &&
+        this.isHover ? {
+        x: ((this.bRadius + this.spaceWidth) / this.spaceWidth),
+        y: ((this.bRadius + this.spaceHeight) / this.spaceHeight)
+      } : undefined)
+      .rotate((!this.fileObj?.isFolder ||
+        !this.isOpened) && this.isHover ? { angleY: -this.hoverBiasX / this.spaceWidth * 5, angleX: this.hoverBiasY / this.spaceHeight * 5 } : {}) // Extremely laggy. Wait for Kirin X900.
+      .brightness((!this.fileObj?.isFolder ||
+        !this.isOpened) && this.isHover ? 1.1 : 1)
       .animation(defaultAnima)
+      .hitTestBehavior(HitTestMode.BLOCK_HIERARCHY)
       .onFocus(() => {
         this.isFocus = true;
       })
       .onBlur(() => {
         this.isFocus = false;
       })
-      .hoverEffect(HoverEffect.Highlight)
-      .clip(true)
+      // .hoverEffect(HoverEffect.Highlight)
+      // .clip(true)
       .onAreaChange((o, n) => {
         if (o.width != n.width) {
           this.spaceWidth = n.width as number;
@@ -101,10 +124,12 @@ struct GridSpace {
         }
         this.isMenu = false;
       })
+      .onHover((isHover) => {
+        this.isHover = isHover;
+      })
       .width('100%')
       .height('100%')
       .borderRadius(this.bRadius)
-      .shadow(this.spaceWidth * this.spaceHeight > 50000 ? ShadowStyle.OUTER_DEFAULT_SM : undefined)
       .gesture(
         LongPressGesture({ repeat: true })
           .onAction(() => {
@@ -121,13 +146,34 @@ struct GridSpace {
             this.isMenu = true;
           }, 10);
         }
-      })
-      .bindContextMenu(this.isMenu, this.bindMenuBuilder(), {
-        aboutToDisappear: () => {
-          this.isMenu = false;
-        },
+        const bX = (e.x || 0) - this.spaceWidth / 2;
+        const bY = (e.y || 0) - this.spaceHeight / 2;
+        this.hoverBiasX = bX;
+        this.hoverBiasY = bY;
+        meow(`[${this.fileObj?.path}] Hover: ${this.isHover}, X: ${bX}, Y: ${bY}`, 'GridSpace', meowLevel.WARN);
       })
     }
+  }
+
+  meowShadowOptions() {
+    if (!this.isHover || !(!this.fileObj?.isFolder || !this.isOpened)) {
+      return { radius: 1, fill: false, color: $r('app.color.meow_shadow'), offsetX: 0, offsetY: 0 } as ShadowOptions
+    }
+    return { radius: this.shadowRadius(), fill: false, color: $r('app.color.meow_shadow'), offsetX: this.hoverBiasX / 10, offsetY: this.hoverBiasY / 10 } as ShadowOptions;
+  }
+
+  shadowRadius() {
+    // Size of block
+    const size = this.spaceWidth * this.spaceHeight;
+    // Radius of shadow
+    let targetRadius = size / 1000;
+    if (targetRadius > 30) {
+      targetRadius = 30;
+    }
+    if (targetRadius < 10) {
+      targetRadius = 10
+    }
+    return targetRadius;
   }
 
   @Builder
@@ -197,11 +243,13 @@ struct GridSpace {
 
         // Call
         let context: common.UIAbilityContext = this.context as common.UIAbilityContext;
-        context.startAbility(wantInfo).then(() => {
-          meow(`context.startAbility(wantInfo) OK!`, 'openAsNew', meowLevel.WARN);
-        }).catch((e: BusinessError) => {
-          meow(`context.startAbility(wantInfo) Failed! ${e}`, 'openAsNew', meowLevel.ERROR);
-        });
+        context.startAbility(wantInfo)
+          .then(() => {
+            meow(`context.startAbility(wantInfo) OK!`, 'openAsNew', meowLevel.WARN);
+          })
+          .catch((e: BusinessError) => {
+            meow(`context.startAbility(wantInfo) Failed! ${e}`, 'openAsNew', meowLevel.ERROR);
+          });
       })
       .catch((e: BusinessError) => {
         meow(`abilityManager.getAbilityRunningInfos() Failed! ${e}`, 'openAsNew', meowLevel.ERROR);

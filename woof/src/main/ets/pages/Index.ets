@@ -111,6 +111,7 @@ struct Index {
       if (o.height != n.height) {
         this.myMeowLayout.height = n.height as number;
       }
+      this.myMeowLayout.area = this.myMeowLayout.width * this.myMeowLayout.height;
       if (!this.render) {
         this.render = true;
       }

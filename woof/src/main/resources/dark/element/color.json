@@ -23,6 +23,10 @@
     {
       "name": "meow_sub_sub",
       "value": "#293C77AB"
+    },
+    {
+      "name": "meow_shadow",
+      "value": "#12FFFFFF"
     }
   ]
 }

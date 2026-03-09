@@ -239,11 +239,13 @@ export class meowLayoutModeStatus {
   @Trace wideMode: boolean;
   @Trace width: number;
   @Trace height: number;
+  @Trace area: number;
 
   constructor(wideMode: boolean, width: number, height: number) {
     this.wideMode = wideMode;
     this.width = width;
     this.height = height;
+    this.area = width * height;
   }
 }
 
