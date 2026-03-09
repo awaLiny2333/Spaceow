@@ -280,3 +280,15 @@ export function listenFocus(windowClass: window.Window) {
 // Toast
 
 export const toastDuration: number = 5000;
+
+export function toast(UIContext: UIContext, msg: ResourceStr) {
+  try {
+    UIContext.getPromptAction()
+      .showToast({
+        message: msg,
+        duration: toastDuration
+      });
+  } catch (e) {
+    meow(`showToast failed: ${e}`, 'ui', meowLevel.ERROR);
+  }
+}

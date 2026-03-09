@@ -25,7 +25,8 @@ struct Index {
   @Local loading: boolean = false;
   // Runtime
   @Local render: boolean = false;
-  context: Context = this.getUIContext().getHostContext()!;
+  context: Context = this.getUIContext()
+    .getHostContext()!;
 
   aboutToAppear(): void {
     if (this.myMeowMisc.newMeowFileObj) {
@@ -48,13 +49,14 @@ struct Index {
                   this.baseFile = undefined;
                   this.basePath = '¯\\_(ツ)_/¯';
                   this.baseSize = -1;
-                  pickDirectory().then((r) => {
-                    if (!r) {
-                      return;
-                    }
-                    meow(`Picked path: ${r}`, 'pickDirectory', meowLevel.INFO);
-                    this.scan(r);
-                  })
+                  pickDirectory(this.getUIContext())
+                    .then((r) => {
+                      if (!r) {
+                        return;
+                      }
+                      meow(`Picked path: ${r}`, 'pickDirectory', meowLevel.INFO);
+                      this.scan(r);
+                    })
                 })
                 .backgroundColor($r('app.color.meow_brand'))
               Button(`󰓞 ${resource2String($r('app.string.privacy_link'), this.context)}`)

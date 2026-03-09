@@ -29,24 +29,12 @@
       "value": "View in new Spaceow window"
     },
     {
-      "name": "privacy_view",
-      "value": "We respect your rights and privacy. Please check out our Privacy Policy before using this App:"
-    },
-    {
-      "name": "welcome",
-      "value": "Welcome to Spaceow!"
-    },
-    {
       "name": "privacy_link",
-      "value": "Privacy Policy of Spaceow"
+      "value": "Privacy Policy"
     },
     {
-      "name": "agree",
-      "value": "Agree"
-    },
-    {
-      "name": "cancel",
-      "value": "Cancel"
+      "name": "fail_api",
+      "value": "Failed! This device doesn't has SystemCapability.FileManagement.UserFileService.FolderSelection capability!"
     }
   ]
 }

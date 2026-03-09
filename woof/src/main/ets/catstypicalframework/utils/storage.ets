@@ -2,6 +2,7 @@ import lazy { fileIo, fileUri, picker } from '@kit.CoreFileKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import lazy { taskpool } from '@kit.ArkTS';
 import { common, OpenLinkOptions } from '@kit.AbilityKit';
+import { toast } from './ui';
 export interface meowReadPickResult {
   succeed: boolean;
   sourcePaths?: string[];
@@ -14,8 +15,7 @@ export interface meowReadPickResult {
  * @returns Majorly the path.
  * */
 export async function fileDocumentPick2Path(fileSuffixFilters: string[] = [".meow"], maxSelectNumber: number = 1): Promise<meowReadPickResult> {
-  // if (canIUse("SystemCapability.FileManagement.UserFileService")) {
-  try {
+  if (canIUse("SystemCapability.FileManagement.UserFileService")) {
     return (new picker.DocumentViewPicker())
       .select({
         maxSelectNumber: maxSelectNumber,
@@ -44,21 +44,17 @@ export async function fileDocumentPick2Path(fileSuffixFilters: string[] = [".meo
         console.error(`[fileDocumentPick2Path] DocumentViewPicker.select failed with err: ${e}`);
         return { succeed: false } as meowReadPickResult;
       });
-  } catch (e) {
-    console.error('[fileDocumentPick2Path] try DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
+  } else {
+    console.error('[fileDocumentPick2Path] DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
     return { succeed: false } as meowReadPickResult;
   }
-  // } else {
-  //   console.error('[fileDocumentPick2Path] DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
-  //   return { succeed: false } as meowReadPickResult;
-  // }
 }
 
 /**
  * Picks a directory and returns the path.
  * @returns The path or undefined if ran into errors.
  * */
-export async function pickDirectory(): Promise<string | undefined> {
+export async function pickDirectory(UIContext: UIContext): Promise<string | undefined> {
   if (canIUse("SystemCapability.FileManagement.UserFileService.FolderSelection")) {
     let DocumentSelectOptions = new picker.DocumentSelectOptions();
     DocumentSelectOptions.selectMode = picker.DocumentSelectMode.FOLDER;
@@ -72,6 +68,7 @@ export async function pickDirectory(): Promise<string | undefined> {
     }
   } else {
     console.error('[pickDirectory] failed. canIUse("SystemCapability.FileManagement.UserFileService.FolderSelection") is false!');
+    toast(UIContext, $r('app.string.fail_api'));
   }
   return undefined;
 }
