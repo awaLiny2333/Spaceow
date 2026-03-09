@@ -2,7 +2,6 @@ import lazy { fileIo, fileUri, picker } from '@kit.CoreFileKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import lazy { taskpool } from '@kit.ArkTS';
 import { common, OpenLinkOptions } from '@kit.AbilityKit';
-
 export interface meowReadPickResult {
   succeed: boolean;
   sourcePaths?: string[];
@@ -15,39 +14,40 @@ export interface meowReadPickResult {
  * @returns Majorly the path.
  * */
 export async function fileDocumentPick2Path(fileSuffixFilters: string[] = [".meow"], maxSelectNumber: number = 1): Promise<meowReadPickResult> {
-  if (canIUse("SystemCapability.FileManagement.UserFileService")) {
-    return (new picker.DocumentViewPicker()).select({
+  // if (canIUse("SystemCapability.FileManagement.UserFileService")) {
+  return (new picker.DocumentViewPicker())
+    .select({
       maxSelectNumber: maxSelectNumber,
       fileSuffixFilters: fileSuffixFilters
     })
-      .then((documentSelectResult) => {
-        let sourcePaths: string[] = [];
+    .then((documentSelectResult) => {
+      let sourcePaths: string[] = [];
 
-        if (documentSelectResult.length == 0) {
-          console.info(`[fileDocumentPick2Path] DocumentViewPicker.select Selected nothing. documentSelectResult = ${documentSelectResult}`);
-          return { succeed: false } as meowReadPickResult;
-        }
-
-        for (let index = 0; index < documentSelectResult.length; index++) {
-          const sourcePath = uri_2_path(documentSelectResult[index]);
-          console.info(`[fileDocumentPick2Path] DocumentViewPicker.select successfully, documentSelectResult sourcePath[${index}]: ${sourcePath}`);
-          sourcePaths.push(sourcePath);
-        }
-
-        return {
-          succeed: true,
-          sourcePaths: sourcePaths,
-        } as meowReadPickResult;
-      })
-      .catch((e: BusinessError) => {
-        console.error(`[fileDocumentPick2Path] DocumentViewPicker.select failed with err: ${e}`);
+      if (documentSelectResult.length == 0) {
+        console.info(`[fileDocumentPick2Path] DocumentViewPicker.select Selected nothing. documentSelectResult = ${documentSelectResult}`);
         return { succeed: false } as meowReadPickResult;
-      });
+      }
 
-  } else {
-    console.error('[fileDocumentPick2Path] DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
-    return { succeed: false } as meowReadPickResult;
-  }
+      for (let index = 0; index < documentSelectResult.length; index++) {
+        const sourcePath = uri_2_path(documentSelectResult[index]);
+        console.info(`[fileDocumentPick2Path] DocumentViewPicker.select successfully, documentSelectResult sourcePath[${index}]: ${sourcePath}`);
+        sourcePaths.push(sourcePath);
+      }
+
+      return {
+        succeed: true,
+        sourcePaths: sourcePaths,
+      } as meowReadPickResult;
+    })
+    .catch((e: BusinessError) => {
+      console.error(`[fileDocumentPick2Path] DocumentViewPicker.select failed with err: ${e}`);
+      return { succeed: false } as meowReadPickResult;
+    });
+
+  // } else {
+  //   console.error('[fileDocumentPick2Path] DocumentViewPicker.select failed. canIUse("SystemCapability.FileManagement.UserFileService") is false!');
+  //   return { succeed: false } as meowReadPickResult;
+  // }
 }
 
 /**
@@ -175,9 +175,10 @@ export function readArrayBufferSync(fullFilePath: string, offset?: number, lengt
     let l = fileIo.readSync(file.fd, buf, { offset: offset, length: length });
     let readLen = l;
     let result = buf.slice(0, readLen);
-    fileIo.close(file).catch((e: BusinessError) => {
-      console.error(`[readArrayBuffer] fileIo.close(file) failed: ${e}`);
-    })
+    fileIo.close(file)
+      .catch((e: BusinessError) => {
+        console.error(`[readArrayBuffer] fileIo.close(file) failed: ${e}`);
+      })
     console.info(`[readArrayBuffer] read [${fullFilePath}][${offset}, ${length}] succeed, length: ${readLen} (${Date.now() - startTime} ms)`);
     return result;
 
@@ -230,32 +231,40 @@ export function sandboxCreateDir(dirPath: string, context: Context, overwrite = 
   }
   console.log(`[sandboxCreateDir] mkdirSync ${fullFilePath} GO.`);
 
-  return fileIo.access(fullFilePath, fileIo.AccessModeType.EXIST).then((r) => {
-    if (r) {
-      if (overwrite) {
-        return fileIo.rmdir(fullFilePath).then(() => {
-          return fileIo.mkdir(fullFilePath).then(() => {
-            console.log(`[sandboxCreateDir][r] mkdirSync ${dirPath} OK.`);
-          }).catch((e: BusinessError) => {
-            console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
-          })
-        }).catch((e: BusinessError) => {
-          console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.rmdir(fullFilePath) failed: ${e}`);
-        })
+  return fileIo.access(fullFilePath, fileIo.AccessModeType.EXIST)
+    .then((r) => {
+      if (r) {
+        if (overwrite) {
+          return fileIo.rmdir(fullFilePath)
+            .then(() => {
+              return fileIo.mkdir(fullFilePath)
+                .then(() => {
+                  console.log(`[sandboxCreateDir][r] mkdirSync ${dirPath} OK.`);
+                })
+                .catch((e: BusinessError) => {
+                  console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
+                })
+            })
+            .catch((e: BusinessError) => {
+              console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.rmdir(fullFilePath) failed: ${e}`);
+            })
+        } else {
+          console.warn(`[sandboxCreateDir][r] directory ${dirPath} exist! Returned.`);
+          return;
+        }
       } else {
-        console.warn(`[sandboxCreateDir][r] directory ${dirPath} exist! Returned.`);
-        return;
+        return fileIo.mkdir(fullFilePath)
+          .then(() => {
+            console.log(`[sandboxCreateDir][new] mkdirSync ${dirPath} OK.`);
+          })
+          .catch((e: BusinessError) => {
+            console.error(`[sandboxCreateDir][new] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
+          })
       }
-    } else {
-      return fileIo.mkdir(fullFilePath).then(() => {
-        console.log(`[sandboxCreateDir][new] mkdirSync ${dirPath} OK.`);
-      }).catch((e: BusinessError) => {
-        console.error(`[sandboxCreateDir][new] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
-      })
-    }
-  }).catch((e: BusinessError) => {
-    console.error(`[sandboxCreateDir] mkdirSync ${dirPath} fileIo.access(fullFilePath, fileIo.AccessModeType.EXIST) failed: ${e}`);
-  })
+    })
+    .catch((e: BusinessError) => {
+      console.error(`[sandboxCreateDir] mkdirSync ${dirPath} fileIo.access(fullFilePath, fileIo.AccessModeType.EXIST) failed: ${e}`);
+    })
 }
 
 // Utils
@@ -323,7 +332,8 @@ export function mimeOfFileName(fileName: string): string {
   }
 
   // 1. 只取文件名部分，防止路径中的点号干扰 (例如 /path.to/my-file)
-  const baseName = fileName.split(/[\\/]/).pop() || '';
+  const baseName = fileName.split(/[\\/]/)
+    .pop() || '';
 
   // 2. 提取后缀名
   const lastDotIndex = baseName.lastIndexOf('.');
@@ -333,7 +343,8 @@ export function mimeOfFileName(fileName: string): string {
     return 'application/octet-stream';
   }
 
-  const ext = baseName.slice(lastDotIndex + 1).toLowerCase();
+  const ext = baseName.slice(lastDotIndex + 1)
+    .toLowerCase();
 
   // 3. 扩展后的 MIME 映射表
   const mimeMap: Record<string, string> = {
