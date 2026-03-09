@@ -1,7 +1,7 @@
 import { meow, meowLevel } from '../catstypicalframework/utils/catsLogger';
 import { resource2String } from '../catstypicalframework/utils/resource';
 import { addUnitsToSize, fileNameOfPath, showInFiles } from '../catstypicalframework/utils/storage';
-import { defaultAnima, defaultRoundedRadius, meowLayoutModeStatus } from '../catstypicalframework/utils/ui';
+import { defaultAnima, meowLayoutModeStatus } from '../catstypicalframework/utils/ui';
 import { meowFile } from '../hosts/meowFiles';
 import { BusinessError, deviceInfo } from '@kit.BasicServicesKit';
 import { abilityManager, common, Want } from '@kit.AbilityKit';
@@ -73,6 +73,7 @@ struct GridSpace {
                 .fontSize(this.spaceHeight / 6)
                 .opacity(0.5)
             }
+            .clip(true)
             .padding(this.bRadius * 0.5 * 0.5)
             .width('100%')
             .alignItems(HorizontalAlign.Start)
@@ -90,17 +91,14 @@ struct GridSpace {
       .padding({ left: this.bRadius * 0.5, top: this.bRadius * 0.5 })
       .backgroundColor(this.isOpened ? $r('app.color.blur_background') : (this.fileObj?.isFolder ? $r('app.color.meow_sub') : $r('app.color.meow_sub_sub')))
       .shadow(this.meowShadowOptions())
-      .scale((!this.fileObj?.isFolder ||
-        !this.isOpened) &&
-        this.isHover ? {
-        x: ((this.bRadius + this.spaceWidth) / this.spaceWidth),
-        y: ((this.bRadius + this.spaceHeight) / this.spaceHeight)
+      .scale(this.isAppearanceHover() ? {
+        x: ((this.bRadius * 1.5 + this.spaceWidth) / this.spaceWidth),
+        y: ((this.bRadius * 1.5 + this.spaceHeight) / this.spaceHeight)
       } : undefined)
-      .rotate((!this.fileObj?.isFolder ||
-        !this.isOpened) && this.isHover ? { angleY: -this.hoverBiasX / this.spaceWidth * 5, angleX: this.hoverBiasY / this.spaceHeight * 5 } : {}) // Extremely laggy. Wait for Kirin X900.
-      .brightness((!this.fileObj?.isFolder ||
-        !this.isOpened) && this.isHover ? 1.1 : 1)
+      .rotate(this.isAppearanceHover() ? { angleY: -this.hoverBiasX / this.spaceWidth * 5, angleX: this.hoverBiasY / this.spaceHeight * 5 } : {}) // Extremely laggy. Wait for Kirin X900.
+      .brightness(this.meowBrightness())
       .animation(defaultAnima)
+      .clickEffect({ level: ClickEffectLevel.MIDDLE })
       .hitTestBehavior(HitTestMode.BLOCK_HIERARCHY)
       .onFocus(() => {
         this.isFocus = true;
@@ -108,8 +106,6 @@ struct GridSpace {
       .onBlur(() => {
         this.isFocus = false;
       })
-      // .hoverEffect(HoverEffect.Highlight)
-      // .clip(true)
       .onAreaChange((o, n) => {
         if (o.width != n.width) {
           this.spaceWidth = n.width as number;
@@ -155,11 +151,21 @@ struct GridSpace {
     }
   }
 
-  meowShadowOptions() {
-    if (!this.isHover || !(!this.fileObj?.isFolder || !this.isOpened)) {
-      return { radius: 1, fill: false, color: $r('app.color.meow_shadow'), offsetX: 0, offsetY: 0 } as ShadowOptions
+  meowBrightness() {
+    if (!this.isHover) {
+      return 1;
     }
-    return { radius: this.shadowRadius(), fill: false, color: $r('app.color.meow_shadow'), offsetX: this.hoverBiasX / 10, offsetY: this.hoverBiasY / 10 } as ShadowOptions;
+    if (this.fileObj?.isFolder && this.isOpened) {
+      return 1.03;
+    }
+    return 1;
+  }
+
+  meowShadowOptions() {
+    if (this.isAppearanceHover()) {
+      return { radius: this.shadowRadius(), fill: false, color: $r('app.color.meow_shadow'), offsetX: this.hoverBiasX / 10, offsetY: this.hoverBiasY / 10 } as ShadowOptions;
+    }
+    return { radius: 1, fill: false, color: $r('app.color.meow_shadow'), offsetX: 0, offsetY: 0 } as ShadowOptions
   }
 
   shadowRadius() {
@@ -174,6 +180,16 @@ struct GridSpace {
       targetRadius = 10
     }
     return targetRadius;
+  }
+
+  isAppearanceHover() {
+    if (!this.isHover) {
+      return false;
+    }
+    if (this.fileObj?.isFolder && this.isOpened) {
+      return false;
+    }
+    return true;
   }
 
   @Builder
