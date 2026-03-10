@@ -49,6 +49,7 @@ struct Index {
                   this.baseFile = undefined;
                   this.basePath = '¯\\_(ツ)_/¯';
                   this.baseSize = -1;
+                  this.myMeowMisc.selectedPath = '';
                   pickDirectory(this.getUIContext())
                     .then((r) => {
                       if (!r) {
@@ -81,7 +82,7 @@ struct Index {
           .shadow(ShadowStyle.OUTER_DEFAULT_SM)
 
           if (!this.loading) {
-            GridSpace({ fileObj: this.baseFile, bRadius: defaultRoundedRadius })
+            GridSpace({ fileObj: this.baseFile, bRadius: 20 })
               .width('100%')
               .layoutWeight(1)
           }

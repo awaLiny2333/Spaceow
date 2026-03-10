@@ -41,9 +41,12 @@ struct GridSpace {
   @Local isHover: boolean = false;
   @Local hoverBiasX: number = 0;
   @Local hoverBiasY: number = 0;
+  // Data
+  @Local myMeowMisc: meowMisc = AppStorageV2.connect<meowMisc>(meowMisc, 'meowMisc', () => new meowMisc())!;
   // Runtime
   context: Context = this.getUIContext()
     .getHostContext()!;
+
 
   build() {
     if (this.fileObj) {
@@ -74,7 +77,6 @@ struct GridSpace {
                 .opacity(0.5)
             }
             .clip(true)
-            .padding(this.bRadius * 0.5 * 0.5)
             .width('100%')
             .alignItems(HorizontalAlign.Start)
           }
@@ -83,6 +85,7 @@ struct GridSpace {
           .bindContextMenu(this.isMenu, this.bindMenuBuilder(), {
             aboutToDisappear: () => {
               this.isMenu = false;
+              this.myMeowMisc.selectedPath = '';
             },
           })
       }
@@ -95,7 +98,7 @@ struct GridSpace {
         x: ((this.bRadius * 1.5 + this.spaceWidth) / this.spaceWidth),
         y: ((this.bRadius * 1.5 + this.spaceHeight) / this.spaceHeight)
       } : undefined)
-      .rotate(this.isAppearanceHover() ? { angleY: -this.hoverBiasX / this.spaceWidth * 5, angleX: this.hoverBiasY / this.spaceHeight * 5 } : {}) // Extremely laggy. Wait for Kirin X900.
+      .rotate(this.isAppearanceHover() ? { angleY: this.hoverBiasX / this.spaceWidth * -5, angleX: this.hoverBiasY / this.spaceHeight * 5 } : {}) // Extremely laggy. Wait for Kirin X900.
       .brightness(this.meowBrightness())
       .animation(defaultAnima)
       .clickEffect({ level: ClickEffectLevel.MIDDLE })
@@ -115,10 +118,13 @@ struct GridSpace {
         }
       })
       .onClick(() => {
+        if (this.isMenu) {
+          this.isMenu = false;
+          this.myMeowMisc.selectedPath = '';
+        }
         if (this.fileObj?.isFolder) {
           this.isOpened = !this.isOpened;
         }
-        this.isMenu = false;
       })
       .onHover((isHover) => {
         this.isHover = isHover;
@@ -132,6 +138,7 @@ struct GridSpace {
             this.isMenu = false;
             setTimeout(() => {
               this.isMenu = true;
+              this.myMeowMisc.selectedPath = this.fileObj?.path || '';
             }, 10);
           })
       )
@@ -140,6 +147,7 @@ struct GridSpace {
           this.isMenu = false;
           setTimeout(() => {
             this.isMenu = true;
+            this.myMeowMisc.selectedPath = this.fileObj?.path || '';
           }, 10);
         }
         const bX = (e.x || 0) - this.spaceWidth / 2;
