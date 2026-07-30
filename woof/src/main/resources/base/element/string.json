@@ -35,6 +35,10 @@
     {
       "name": "fail_api",
       "value": "Failed! This device doesn't has SystemCapability.FileManagement.UserFileService.FolderSelection capability!"
+    },
+    {
+      "name": "fail_other",
+      "value": "Failed! This device doesn't support this API? Or you should try again!"
     }
   ]
 }

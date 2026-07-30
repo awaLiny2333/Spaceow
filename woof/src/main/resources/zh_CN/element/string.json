@@ -35,6 +35,10 @@
     {
       "name": "fail_api",
       "value": "失败了！设备没有 SystemCapability.FileManagement.UserFileService.FolderSelection 能力！"
+    },
+    {
+      "name": "fail_other",
+      "value": "失败了！设备没有这个 API 能力？或者你可以再试一次！"
     }
   ]
 }

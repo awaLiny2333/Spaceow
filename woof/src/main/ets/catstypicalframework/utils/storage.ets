@@ -55,7 +55,8 @@ export async function fileDocumentPick2Path(fileSuffixFilters: string[] = [".meo
  * @returns The path or undefined if ran into errors.
  * */
 export async function pickDirectory(UIContext: UIContext): Promise<string | undefined> {
-  if (canIUse("SystemCapability.FileManagement.UserFileService.FolderSelection")) {
+  // if (canIUse("SystemCapability.FileManagement.UserFileService.FolderSelection")) {
+  try {
     let DocumentSelectOptions = new picker.DocumentSelectOptions();
     DocumentSelectOptions.selectMode = picker.DocumentSelectMode.FOLDER;
     let documentPicker = new picker.DocumentViewPicker();
@@ -66,9 +67,10 @@ export async function pickDirectory(UIContext: UIContext): Promise<string | unde
       console.error(`[pickDirectory] Failed! ${e}`);
       return undefined;
     }
-  } else {
-    console.error('[pickDirectory] failed. canIUse("SystemCapability.FileManagement.UserFileService.FolderSelection") is false!');
-    toast(UIContext, $r('app.string.fail_api'));
+    // } else {
+  } catch (e) {
+    console.error(`[pickDirectory] failed. ${e}`);
+    toast(UIContext, $r('app.string.fail_other'));
   }
   return undefined;
 }
@@ -114,7 +116,7 @@ export async function saveHybrid(fullFilePath: string, content: string | ArrayBu
           .catch((e: BusinessError) => {
             console.error(`[saveHybrid] fileIo.close(file) file ${fullFilePath} failed: ${e}`);
           });
-      })
+      });
   } catch (e) {
     console.error(`[saveHybrid] write to file ${fullFilePath} failed: ${e}`);
     return false;
@@ -138,7 +140,7 @@ export async function fileCopy(fullSourcePath: string, fullDestPath: string, ove
     })
     .then(() => {
       return true;
-    })
+    });
 }
 
 // Read
@@ -179,7 +181,7 @@ export function readArrayBufferSync(fullFilePath: string, offset?: number, lengt
     fileIo.close(file)
       .catch((e: BusinessError) => {
         console.error(`[readArrayBuffer] fileIo.close(file) failed: ${e}`);
-      })
+      });
     console.info(`[readArrayBuffer] read [${fullFilePath}][${offset}, ${length}] succeed, length: ${readLen} (${Date.now() - startTime} ms)`);
     return result;
 
@@ -244,11 +246,11 @@ export function sandboxCreateDir(dirPath: string, context: Context, overwrite = 
                 })
                 .catch((e: BusinessError) => {
                   console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
-                })
+                });
             })
             .catch((e: BusinessError) => {
               console.error(`[sandboxCreateDir][r] mkdirSync ${dirPath} return fileIo.rmdir(fullFilePath) failed: ${e}`);
-            })
+            });
         } else {
           console.warn(`[sandboxCreateDir][r] directory ${dirPath} exist! Returned.`);
           return;
@@ -260,12 +262,12 @@ export function sandboxCreateDir(dirPath: string, context: Context, overwrite = 
           })
           .catch((e: BusinessError) => {
             console.error(`[sandboxCreateDir][new] mkdirSync ${dirPath} return fileIo.mkdir(fullFilePath) failed: ${e}`);
-          })
+          });
       }
     })
     .catch((e: BusinessError) => {
       console.error(`[sandboxCreateDir] mkdirSync ${dirPath} fileIo.access(fullFilePath, fileIo.AccessModeType.EXIST) failed: ${e}`);
-    })
+    });
 }
 
 // Utils
@@ -297,7 +299,7 @@ export function addUnitsToSize(size_in_bytes: number | bigint) {
   if (size_in_bytes == undefined || size_in_bytes == null) {
     return 'No Bytes!';
   }
-  let units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  let units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   let result = BigInt(size_in_bytes);
   let unit = 0;
   while (result > 1000 * 1000 && unit < units.length - 2) {
