@@ -17,13 +17,13 @@
       {
         "name": "default",
         "material": {
-          "storePassword": "00000020D2DD60A4C4AA23A437C86522E340D796F108BD78CDC3FBDD01DAF0DB92237A91721A5D58AFA7D2034C2B1FFA",
-          "certpath": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.cer",
+          "storePassword": "0000002014DB89C77B102F784F9314480F1E41CD7F783C097C66E26333BE0A196794D0342F7C52FC568C0A18F1A27254",
+          "certpath": "/storage/Users/currentUser/.ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "00000020D2DD60A4C4AA23A437C86522E340D796F108BD78CDC3FBDD01DAF0DB92237A91721A5D58AFA7D2034C2B1FFA",
-          "profile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p7b",
+          "keyPassword": "0000002014DB89C77B102F784F9314480F1E41CD7F783C097C66E26333BE0A196794D0342F7C52FC568C0A18F1A27254",
+          "profile": "/storage/Users/currentUser/.ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/storage/Users/currentUser/appdata/el2/base/com.huawei.devecostudio/files/ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p12"
+          "storeFile": "/storage/Users/currentUser/.ohos/config/default_Spaceo_ii74Bk60hewXoV3ubhj9L6LE0gzMeev46Y3ktBYniE.p12"
         },
         "type": "HarmonyOS"
       }
